@@ -388,11 +388,11 @@ public class PROMARTHOMECENTER{
         return 0.0;
     }
 
-    public static void procesarCompra(Scanner scanner, String producto, double precioUnitario) {
+    public static void procesarCompra(Scanner pago, String producto, double precioUnitario) {
         System.out.println("El precio de " + producto + " es $" + precioUnitario);
         System.out.print("¿Cuántas unidades desea comprar? ");
-        int unidades = scanner.nextInt();
-        scanner.nextLine();
+        int unidades = pago.nextInt();
+        pago.nextLine();
 
         double precioTotal = unidades * precioUnitario;
         System.out.println("El total a pagar es: $" + precioTotal);
