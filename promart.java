@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class promart {
     Scanner grinch= new Scanner(System.in);
-    String [] tecnologia={"Tv y video","Computo", "telefonia"};
+    String [] tecnologia={"Tv y video","Compúto", "telefonia"};
     String [] servicios={"Pisos", "Electricidad", "Puertas ", "Pintura"};
     String [] productos={"celulares, cocinas, sofa, herramientas"};
     Random random = new Random();
@@ -52,8 +52,8 @@ public class promart {
 
     public String ComprarMenu(){
         System.out.println("------TECNOLOGIA------------");
-        System.out.println("el producto de hoy es:"+productos[s]);
-        System.out.println( "Seleccione su menú a comprar");
+        System.out.println("Productos en oferta:"+productos[s]);
+        System.out.println( "Seleccione el producto a comprar");
         for (int i=0; i<tecnologia.length;i++){
             System.out.println("Opcion "+(i+1)+ " : " +tecnologia[i]);
         }
@@ -212,7 +212,7 @@ public class promart {
                 carrito_extra[1]+=cantidad;
                 System.out.println("Ud ha pedido "+carrito_extra[1]+ "servicio "+servicios[1]);
                 subtotal_extra[1]=carrito_extra[1]*precio[3];
-                System.out.println("¿Desea elegir otro menú más?  1 SI/ 2 NO / 3 Menu Principal");
+                System.out.println("¿Desea elegir otro servicio más?  1 SI/ 2 NO / 3 Menu Principal");
                 opcion=grinch.nextInt();
                 grinch.nextLine();
                 if(opcion==1)
@@ -268,7 +268,7 @@ public class promart {
                 carrito_extra[3]+=cantidad;
                 System.out.println("Ud ha pedido "+carrito_extra[2]+ "platos de "+servicios[3]);
                 subtotal_extra[3]=carrito_extra[3]*precio[5];
-                System.out.println("¿Desea elegir otro menú más?  1 SI/ 2 NO / 3 Menu Principal");
+                System.out.println("¿Desea elegir otro servicio más?  1 SI/ 2 NO / 3 Menu Principal");
                 opcion=grinch.nextInt();
                 grinch.nextLine();
                 if(opcion==1)
@@ -311,7 +311,6 @@ public class promart {
             File archivo= new File("D:\\boleta.txt");
             FileWriter escritor=new FileWriter(archivo);
             escritor.write("----BOLETA DE VENTA---------");
-
             escritor.write(" SUBTOTAL :"+subtotal);
             escritor.write(" IGV :"+igv);
             escritor.write(" TOTAL :"+totalpagar);
