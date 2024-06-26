@@ -21,6 +21,17 @@ public class promart {
     int opcion, cantidad;
     public String Categorias(){
         System.out.println("---------▁ ▂ ▄ ▅ ▆ ▇ █ BIENVENIDO A PROMART HOMECENTER █ ▇ ▆ ▅ ▄ ▂ ▁-----------");
+        System.out.println(" = \"\"\"\n" +
+                " ██████ █████  ██████ ███  ███ ██████ █████  ▄▄▄▄▄▄\n" +
+                " ██  ██ ██  ██ ██  ██ ████████ ██  ██ ██  ██   ██  \n" +
+                " ██████ █████  ██  ██ ██ ██ ██ ██████ █████    ██  \n" +
+                " ██     ██  ██ ██  ██ ██    ██ ██  ██ ██  ██   ██  \n" +
+                " ██     ██  ██ ██████ ██    ██ ██  ██ ██  ██   ██  \n" +
+                "\n" +
+                " P      R      O      M      A      R      T\n" +
+                "\"\"\"\n" +
+                "\n" +
+                "");
         System.out.println("Marque alguna de las siguientes opciones");
         System.out.println(" 1.- Tecnologia");
         System.out.println(" 2.- Servicios");
