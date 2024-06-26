@@ -131,7 +131,7 @@ public class promart {
                 carrito[2]+=cantidad;
                 System.out.println("Ud ha pedido "+carrito[2]+ "productos de "+tecnologia[2]);
 
-                System.out.println("¿Desea elegir otro menú más?  1 SI/ 2 NO / 3 Menu Principal");
+                System.out.println("¿Desea elegir otro servicio  más?  1 SI/ 2 NO / 3 Menu Principal");
                 opcion=grinch.nextInt();
                 grinch.nextLine();
                 if(opcion==1)
