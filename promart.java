@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class promart {
     Scanner grinch= new Scanner(System.in);
-    String [] tecnologia={"Tv y video","Compúto", "telefonia"};
+    String [] tecnologia={"Tv y video","Cómputo", "telefonia"};
     String [] servicios={"Pisos", "Electricidad", "Puertas ", "Pintura"};
     String [] productos={"celulares, cocinas, sofa, herramientas"};
     Random random = new Random();
