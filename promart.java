@@ -20,7 +20,7 @@ public class promart {
     String respuesta;
     int opcion, cantidad;
     public String Categorias(){
-        System.out.println("---------BIENVENIDO A PROMART HOMECENTER-----------");
+        System.out.println("---------▁ ▂ ▄ ▅ ▆ ▇ █ BIENVENIDO A PROMART HOMECENTER █ ▇ ▆ ▅ ▄ ▂ ▁-----------");
         System.out.println(" df");
         System.out.println("Marque alguna de las siguientes opciones");
         System.out.println(" 1.- Tecnologia");
