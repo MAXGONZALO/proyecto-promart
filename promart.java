@@ -19,8 +19,9 @@ public class promart {
     int [] carrito_extra=new int[servicios.length];
     String respuesta;
     int opcion, cantidad;
-    public String MenuPrincipal(){
+    public String Categorias(){
         System.out.println("---------BIENVENIDO A PROMART HOMECENTER-----------");
+        System.out.println(" df");
         System.out.println("Marque alguna de las siguientes opciones");
         System.out.println(" 1.- Tecnologia");
         System.out.println(" 2.- Servicios");
@@ -29,7 +30,7 @@ public class promart {
         grinch.nextLine();
         switch (opcion){
             case 1:
-                this.ComprarMenu();
+                this.ComprarProducto();
                 break;
 
             case 2:
@@ -42,7 +43,7 @@ public class promart {
 
             default:
                 System.out.println("Opcion no válida");
-                this.MenuPrincipal();
+                this.Categorias();
                 break;
 
         }
@@ -50,7 +51,7 @@ public class promart {
         return null;
     }
 
-    public String ComprarMenu(){
+    public String ComprarProducto(){
         System.out.println("------TECNOLOGIA------------");
         System.out.println("Productos en oferta:"+productos[s]);
         System.out.println( "Seleccione el producto a comprar");
@@ -74,10 +75,10 @@ public class promart {
                     this.ComprarExtra();
                 }
                 else if (opcion==2){
-                    this.PagoMenus();
+                    this.PagoCategoria();
                 }
                 else if (opcion==3){
-                    this.MenuPrincipal();
+                    this.Categorias();
                 }
                 else
                 {
@@ -101,10 +102,10 @@ public class promart {
                     this.ComprarExtra();
                 }
                 else if (opcion==2){
-                    this.PagoMenus();
+                    this.PagoCategoria();
                 }
                 else if (opcion==3){
-                    this.MenuPrincipal();
+                    this.Categorias();
                 }
                 else
                 {
@@ -129,10 +130,10 @@ public class promart {
                     this.ComprarExtra();
                 }
                 else if (opcion==2){
-                    this.PagoMenus();
+                    this.PagoCategoria();
                 }
                 else if (opcion==3){
-                    this.MenuPrincipal();
+                    this.Categorias();
                 }
                 else
                 {
@@ -144,7 +145,7 @@ public class promart {
 
             default:
                 System.out.println("Opcion no válida");
-                this.MenuPrincipal();
+                this.Categorias();
                 break;
 
 
@@ -156,7 +157,7 @@ public class promart {
 
         return null;
     }
-    public double PagoMenus(){
+    public double PagoCategoria(){
         double cantidadtotalmenus=Arrays.stream(carrito).sum();
         double subtotalextra=Arrays.stream(subtotal_extra).sum();
         double subtotal0= (cantidadtotalmenus*precio[0])+subtotalextra;
@@ -191,13 +192,13 @@ public class promart {
                 if(opcion==1)
                 {
                     System.out.println("Volviendo a la opción de compra");
-                    this.ComprarMenu();
+                    this.ComprarProducto();
                 }
                 else if (opcion==2){
-                    this.PagoMenus();
+                    this.PagoCategoria();
                 }
                 else if (opcion==3){
-                    this.MenuPrincipal();
+                    this.Categorias();
                 }
                 else
                 {
@@ -218,13 +219,13 @@ public class promart {
                 if(opcion==1)
                 {
                     System.out.println("Volviendo a la opción de compra");
-                    this.ComprarMenu();
+                    this.ComprarProducto();
                 }
                 else if (opcion==2){
-                    this.PagoMenus();
+                    this.PagoCategoria();
                 }
                 else if (opcion==3){
-                    this.MenuPrincipal();
+                    this.Categorias();
                 }
                 else
                 {
@@ -246,13 +247,13 @@ public class promart {
                 if(opcion==1)
                 {
                     System.out.println("Volviendo a la opción de compra");
-                    this.ComprarMenu();
+                    this.ComprarProducto();
                 }
                 else if (opcion==2){
-                    this.PagoMenus();
+                    this.PagoCategoria();
                 }
                 else if (opcion==3){
-                    this.MenuPrincipal();
+                    this.Categorias();
                 }
                 else
                 {
@@ -274,13 +275,13 @@ public class promart {
                 if(opcion==1)
                 {
                     System.out.println("Volviendo a la opción de compra");
-                    this.ComprarMenu();
+                    this.ComprarProducto();
                 }
                 else if (opcion==2){
-                    this.PagoMenus();
+                    this.PagoCategoria();
                 }
                 else if (opcion==3){
-                    this.MenuPrincipal();
+                    this.Categorias();
                 }
                 else
                 {
@@ -293,7 +294,7 @@ public class promart {
 
             default:
                 System.out.println("Opcion no válida");
-                this.MenuPrincipal();
+                this.Categorias();
                 break;
 
 
@@ -327,7 +328,7 @@ public class promart {
 
     public static void main(String [] args){
         promart papanoel= new promart();
-        papanoel.MenuPrincipal();
+        papanoel.Categorias();
 
 
 
