@@ -40,7 +40,6 @@ public class SistemaPago {
         System.out.print("Ingrese el código de seguridad: ");
         int Seguridad = Integer.parseInt(pago.nextLine());
         System.out.println("Procesando pago con tarjeta...");
-        // Aquí iría la lógica de procesamiento de pago con tarjeta
         System.out.println("¡Pago exitoso!");
     }
     public static void pagarEnEfectivo() {
