@@ -458,14 +458,43 @@ public class PROMARTHOMECENTER{
     }
 
     public static void imprimirBoleta(double montoPago, double igv, double montoTotal) {
-        System.out.println("╔══════════════════════════════╗");
-        System.out.println("║            BOLETA            ║");
-        System.out.println("║------------------------------║");
-        System.out.println("║ Monto sin IGV:     $" + redondear(montoPago) + "          ║");
-        System.out.println("║ Monto IGV:         $" + redondear(igv) + "           ║");
-        System.out.println("║------------------------------║");
-        System.out.println("║ Monto total:       $" + redondear(montoTotal) + "          ║");
-        System.out.println("╚══════════════════════════════╝");
+        System.out.println("╔════════════════════════════════════════════╗");
+        System.out.println("║          █▄▄ █▀█ █░░ █▀▀ ▀█▀ ▄▀█        ║");
+        System.out.println("║          █▄█ █▄█ █▄▄ ██▄ ░█░ █▀█        ║");
+        System.out.println("╠════════════════════════════════════════════╣");
+        System.out.println("║                                            ║");
+        System.out.println("║ OP. Exoneradas                     $ 00.00 ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ OP. Gratuitas                      $ 00.00 ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ OP. Inafectas                      $ 00.00 ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ Monto del pago:                  $" + redondear(montoPago) + "   ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ Monto del IGV:                   $" + redondear(igv) + "    ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ Monto total a pagar:             $" + redondear(montoTotal) +  "  ║");
+        System.out.println("║                                            ║");
+        System.out.println("╚════════════════════════════════════════════╝");
+        System.out.println("");
+        System.out.println("¡PAGO REALIZADO CON EXITO!");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("░██████╗░██████╗░░█████╗░░█████╗░██╗░█████╗░░██████╗  ██████╗░░█████╗░██████╗░");
+        System.out.println("██╔════╝░██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗██╔════╝  ██╔══██╗██╔══██╗██╔══██");
+        System.out.println("██║░░██╗░██████╔╝███████║██║░░╚═╝██║███████║╚█████╗░  ██████╔╝██║░░██║██████╔╝");
+        System.out.println("██║░░╚██╗██╔══██╗██╔══██║██║░░██╗██║██╔══██║░╚═══██╗  ██╔═══╝░██║░░██║██╔══██╗");
+        System.out.println("╚██████╔╝██║░░██║██║░░██║╚█████╔╝██║██║░░██║██████╔╝  ██║░░░░░╚█████╔╝██║░░██║");
+        System.out.println("╚╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝╚═╝░░╚═╝╚═════╝░  ╚═╝░░░░░░╚════╝░╚═╝░░╚═╝");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("██╗░░░██╗██╗░██████╗██╗████████╗░█████╗░██████╗░  ██████╗░██████╗░░█████╗░███╗░░░███╗░█████╗░██████╗░████████");
+        System.out.println("██║░░░██║██║██╔════╝██║╚══██╔══╝██╔══██╗██╔══██╗  ██╔══██╗██╔══██╗██╔══██╗████╗░████║██╔══██╗██╔══██╗╚══██╔══╝");
+        System.out.println("╚██╗░██╔╝██║╚█████╗░██║░░░██║░░░███████║██████╔╝  ██████╔╝██████╔╝██║░░██║██╔████╔██║███████║██████╔╝░░░██║░░");
+        System.out.println("░╚████╔╝░██║░╚═══██╗██║░░░██║░░░██╔══██║██╔══██╗  ██╔═══╝░██╔══██╗██║░░██║██║╚██╔╝██║██╔══██║██╔══██╗░░░██║░░░");
+        System.out.println("░░╚██╔╝░░██║██████╔╝██║░░░██║░░░██║░░██║██║░░██║  ██║░░░░░██║░░██║╚█████╔╝██║░╚═╝░██║██║░░██║██║░░██║░░░██║░░");
+        System.out.println("░░░╚═╝░░░╚═╝╚═════╝░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝  ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░");
     }
 
     public static void main(String[] args) {
