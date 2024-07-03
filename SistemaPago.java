@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class SistemaPago {
+public class Sistemapago {
     static Scanner pago = new Scanner(System.in);
     public static void main(String[] args) {
         procesarPago();
@@ -49,14 +49,44 @@ public class SistemaPago {
         System.out.println("¡Pago exitoso!");
     }
     public static void imprimirBoleta(double montoPago, double igv, double montoTotal) {
-        System.out.println("╔══════════════════════════════╗");
-        System.out.println("║            BOLETA            ║");
-        System.out.println("╠══════════════════════════════╣");
-        System.out.println("║ Monto del pago:      $" + redondear(montoPago) + "   ║");
-        System.out.println("║ Monto del IGV:       $" + redondear(igv) + "    ║");
-        System.out.println("║ Monto total a pagar: $" + redondear(montoTotal) +  "  ║");
-        System.out.println("╚══════════════════════════════╝");
-        System.out.println("¡Gracias por su compra!");
+        System.out.println("╔════════════════════════════════════════════╗");
+        System.out.println("║          █▄▄ █▀█ █░░ █▀▀ ▀█▀ ▄▀█        ║");
+        System.out.println("║          █▄█ █▄█ █▄▄ ██▄ ░█░ █▀█        ║");
+        System.out.println("╠════════════════════════════════════════════╣");
+        System.out.println("║                                            ║");
+        System.out.println("║ OP. Exoneradas                     $ 00.00 ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ OP. Gratuitas                      $ 00.00 ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ OP. Inafectas                      $ 00.00 ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ Monto del pago:                  $" + redondear(montoPago) + "   ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ Monto del IGV:                   $" + redondear(igv) + "    ║");
+        System.out.println("║                                            ║");
+        System.out.println("║ Monto total a pagar:             $" + redondear(montoTotal) +  "  ║");
+        System.out.println("║                                            ║");
+        System.out.println("╚════════════════════════════════════════════╝");
+        System.out.println("");
+        System.out.println("¡PAGO REALIZADO CON EXITO!");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("░██████╗░██████╗░░█████╗░░█████╗░██╗░█████╗░░██████╗  ██████╗░░█████╗░██████╗░");
+        System.out.println("██╔════╝░██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗██╔════╝  ██╔══██╗██╔══██╗██╔══██");
+        System.out.println("██║░░██╗░██████╔╝███████║██║░░╚═╝██║███████║╚█████╗░  ██████╔╝██║░░██║██████╔╝");
+        System.out.println("██║░░╚██╗██╔══██╗██╔══██║██║░░██╗██║██╔══██║░╚═══██╗  ██╔═══╝░██║░░██║██╔══██╗");
+        System.out.println("╚██████╔╝██║░░██║██║░░██║╚█████╔╝██║██║░░██║██████╔╝  ██║░░░░░╚█████╔╝██║░░██║");
+        System.out.println("╚╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝╚═╝░░╚═╝╚═════╝░  ╚═╝░░░░░░╚════╝░╚═╝░░╚═╝");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("██╗░░░██╗██╗░██████╗██╗████████╗░█████╗░██████╗░  ██████╗░██████╗░░█████╗░███╗░░░███╗░█████╗░██████╗░████████");
+        System.out.println("██║░░░██║██║██╔════╝██║╚══██╔══╝██╔══██╗██╔══██╗  ██╔══██╗██╔══██╗██╔══██╗████╗░████║██╔══██╗██╔══██╗╚══██╔══╝");
+        System.out.println("╚██╗░██╔╝██║╚█████╗░██║░░░██║░░░███████║██████╔╝  ██████╔╝██████╔╝██║░░██║██╔████╔██║███████║██████╔╝░░░██║░░");
+        System.out.println("░╚████╔╝░██║░╚═══██╗██║░░░██║░░░██╔══██║██╔══██╗  ██╔═══╝░██╔══██╗██║░░██║██║╚██╔╝██║██╔══██║██╔══██╗░░░██║░░░");
+        System.out.println("░░╚██╔╝░░██║██████╔╝██║░░░██║░░░██║░░██║██║░░██║  ██║░░░░░██║░░██║╚█████╔╝██║░╚═╝░██║██║░░██║██║░░██║░░░██║░░");
+        System.out.println("░░░╚═╝░░░╚═╝╚═════╝░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝  ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░");
+
     }
     public static double redondear(double valor) {
         return Math.round(valor * 100.0) / 100.0;
