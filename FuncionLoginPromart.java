@@ -1,86 +1,154 @@
-import java.util.Scanner;
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
-public class FuncionLoginPromart {
-    public String fEDAD (){
-        Scanner PROMART = new Scanner(System.in);
-        System.out.println("----BIENVENIDO A PROMART HOMECENTER");
-        System.out.println("Para la compra de promart, coloque su fecha de nacimiento");
-        System.out.println("Ingrese el día de su nacimiento (DD): ");
-        int dia = PROMART.nextInt();
-        System.out.println("Ingrese el mes de su nacimiento (MM): ");
-        int mes = PROMART.nextInt();
-        System.out.println("Ingrese el año de su nacimiento (YYYY): ");
-        int anio = PROMART.nextInt();
-        LocalDate fechaNacimiento = LocalDate.of(anio, mes, dia);
-        LocalDate fechaActual = LocalDate.now();
-        int edad = Period.between(fechaNacimiento, fechaActual).getYears();
-        PROMART.nextLine();
-        if (edad>=18){
-            System.out.println("proceda a llenar sus datos");
-            this.fDatosCliente();
+public class Promart {
 
+    static class Usuario {
+        String nombre;
+        String apellido;
+        String dni;
+        LocalDate fechaNacimiento;
+        String usuario;
+        String contrasena;
+
+        public Usuario(String nombre, String apellido, String dni, LocalDate fechaNacimiento, String usuario, String contrasena) {
+            this.nombre = nombre;
+            this.apellido = apellido;
+            this.dni = dni;
+            this.fechaNacimiento = fechaNacimiento;
+            this.usuario = usuario;
+            this.contrasena = contrasena;
         }
-        else if(edad<=18){
-            System.out.println("No cumple con los requisitos para la compra");
-
-        }
-        return null;
-
-    }
-
-    public String fDatosCliente() {
-        String apodo,dni, correo, contraseña, correo_in,contraseña_in;
-        Scanner alok= new Scanner(System.in);
-        System.out.println("----Registrar Cuenta----");
-        System.out.println("Ingrese su apodo");
-        apodo=alok.nextLine();
-        System.out.println("Ingrese su numero de DNI");
-        dni=alok.nextLine();
-        System.out.println("Ingrese su correo");
-        correo= alok.nextLine();
-        System.out.println("Ingrese su contraseña");
-        contraseña= alok.nextLine();
-        System.out.println("----Iniciar sesión----");
-        System.out.println("Ingrese su correo");
-        correo_in= alok.nextLine();
-        System.out.println("Ingrese su contraseña");
-        contraseña_in= alok.nextLine();
-        if(correo_in.equals(correo)&&contraseña_in.equals(contraseña)){
-            System.out.println("Bienvenido: "+apodo);
-            String genero="";
-            System.out.println("¿Cual es su genero?");
-            genero=alok.nextLine();
-            switch(genero){
-                case "Mujer":
-                    System.out.println("¡Bienvenida! ¿Que esta buscando?");
-                    break;
-
-                case "Varón":
-                    System.out.println("¡Bienvenido! ¿Que esta buscando?");
-
-
-                    break;
-                default:
-                    System.out.println("Ese género no existe");
-            }
-
-        }
-        else {
-            System.out.println("Datos no válidos");
-
-        }
-        return null;
     }
 
     public static void main(String[] args) {
-        System.out.println("----Promart----");
+        Scanner scanner = new Scanner(System.in);
 
-        FuncionLoginPromart PROMART = new FuncionLoginPromart();
-        PROMART.fEDAD();
+        Usuario[] usuariosRegistrados = new Usuario[10]; // Array para almacenar hasta 10 usuarios
+        int totalUsuarios = 0;
 
+        // Mensaje de bienvenida
+        System.out.println("Bienvenido a Promart Home Center");
 
+        // Proceso de registro
+        while (totalUsuarios < usuariosRegistrados.length) {
+            System.out.println("\nPor favor, completa tu registro:");
 
+            System.out.print("Nombre: ");
+            String nombreUsuario = scanner.nextLine();
+
+            System.out.print("Apellidos: ");
+            String apellidoUsuario = scanner.nextLine();
+
+            System.out.print("Número de DNI: ");
+            String dniUsuario = scanner.nextLine();
+
+            System.out.print("Fecha de Nacimiento (DD/MM/AAAA): ");
+            String fechaNacimientoStr = scanner.nextLine();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
+
+            // Verificar edad para restricción de registro
+            LocalDate fechaActual = LocalDate.now();
+            int edad = fechaActual.getYear() - fechaNacimiento.getYear();
+
+            if (fechaActual.getMonthValue() < fechaNacimiento.getMonthValue() ||
+                    (fechaActual.getMonthValue() == fechaNacimiento.getMonthValue() &&
+                            fechaActual.getDayOfMonth() < fechaNacimiento.getDayOfMonth())) {
+                edad--;
+            }
+
+            if (edad < 18) {
+                System.out.println("Lo siento, no puedes registrarte. Debes ser mayor de 18 años.");
+                continue; // Volver a solicitar el registro si no cumple con la edad mínima
+            }
+
+            System.out.print("Nombre de usuario: ");
+            String usuarioRegistrado = scanner.nextLine();
+
+            System.out.print("Contraseña: ");
+            String contrasenaRegistrada = scanner.nextLine();
+
+            // Crear un nuevo usuario y agregarlo al array
+            usuariosRegistrados[totalUsuarios] = new Usuario(nombreUsuario, apellidoUsuario, dniUsuario, fechaNacimiento, usuarioRegistrado, contrasenaRegistrada);
+            totalUsuarios++;
+
+            // Mostrar mensaje de registro exitoso
+            System.out.println("\nRegistro exitoso. Ahora puedes iniciar sesión.");
+
+            // Preguntar al usuario si desea registrar otro usuario
+            System.out.print("¿Deseas registrar otro usuario? (s/n): ");
+            String opcion = scanner.nextLine();
+            if (!opcion.equalsIgnoreCase("s")) {
+                break; // Salir del bucle si la respuesta no es 's'
+            }
+        }
+
+        // Inicio de sesión
+        System.out.print("\nInicia sesión:\nUsuario: ");
+        String usuarioInput = scanner.nextLine();
+
+        System.out.print("Contraseña: ");
+        String contrasenaInput = scanner.nextLine();
+
+        // Verificar el inicio de sesión
+        boolean loginExitoso = false;
+        Usuario usuarioLogueado = null;
+        for (int i = 0; i < totalUsuarios; i++) {
+            if (usuarioInput.equals(usuariosRegistrados[i].usuario) && contrasenaInput.equals(usuariosRegistrados[i].contrasena)) {
+                loginExitoso = true;
+                usuarioLogueado = usuariosRegistrados[i];
+                break;
+            }
+        }
+
+        if (loginExitoso) {
+            // Mostrar mensaje de bienvenida al usuario logueado
+            System.out.println("\n¡Login exitoso! Bienvenido a Promart Home Center, " + usuarioLogueado.nombre + " " + usuarioLogueado.apellido + ".");
+            System.out.println("Número de DNI: " + usuarioLogueado.dni);
+            System.out.println("Fecha de Nacimiento: " + usuarioLogueado.fechaNacimiento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+            // Mostrar categorías de productos disponibles
+            System.out.println("\nCategorías disponibles:");
+            System.out.println("1. Herramientas");
+            System.out.println("2. Pinturas");
+            System.out.println("3. Muebles para dormitorio");
+            System.out.println("4. Tecnología");
+
+            // Selección de categoría
+            System.out.print("\nSeleccione la categoría de productos que desea explorar (1-4): ");
+            int opcionCategoria = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer de entrada
+
+            // Procesar la selección de categoría
+            switch (opcionCategoria) {
+                case 1:
+                    System.out.println("\nExplorando la categoría de Herramientas...");
+                    // Aquí puedes agregar la lógica para mostrar productos de Herramientas
+                    break;
+                case 2:
+                    System.out.println("\nExplorando la categoría de Pinturas...");
+                    // Aquí puedes agregar la lógica para mostrar productos de Pinturas
+                    break;
+                case 3:
+                    System.out.println("\nExplorando la categoría de Muebles para dormitorio...");
+                    // Aquí puedes agregar la lógica para mostrar productos de Muebles para dormitorio
+                    break;
+                case 4:
+                    System.out.println("\nExplorando la categoría de Tecnología...");
+                    // Aquí puedes agregar la lógica para mostrar productos de Tecnología
+                    break;
+                default:
+                    System.out.println("\nOpción de categoría no válida.");
+                    break;
+            }
+
+        } else {
+            System.out.println("\nUsuario o contraseña incorrectos. Por favor, intenta de nuevo.");
+        }
+
+        scanner.close();
     }
 }
