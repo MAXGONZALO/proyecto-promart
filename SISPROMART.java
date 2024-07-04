@@ -1,110 +1,1113 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.Random;
-import java.util.Scanner;
 
-public class SISPROMART{
 
-    public void fEDAD() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("----BIENVENIDO A PROMART HOMECENTER----");
-        System.out.println("Para la compra en Promart, coloque su fecha de nacimiento");
-        System.out.print("Ingrese el día de su nacimiento (DD): ");
-        int dia = scanner.nextInt();
-        System.out.print("Ingrese el mes de su nacimiento (MM): ");
-        int mes = scanner.nextInt();
-        System.out.print("Ingrese el año de su nacimiento (YYYY): ");
-        int anio = scanner.nextInt();
+public class SISPROMART {
 
-        LocalDate fechaNacimiento = LocalDate.of(anio, mes, dia);
-        LocalDate fechaActual = LocalDate.now();
-        int edad = Period.between(fechaNacimiento, fechaActual).getYears();
+    static class Usuario {
+        String nombre;
+        String apellido;
+        String dni;
+        LocalDate fechaNacimiento;
+        String usuario;
+        String contrasena;
 
-        if (edad >= 18) {
-            System.out.println("Proceda a llenar sus datos");
-            fDatosCliente();
-        } else {
-            System.out.println("No cumple con los requisitos para la compra");
-        }
-    }
-
-    public void fDatosCliente() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("----Registrar Cuenta----");
-        System.out.print("Ingrese su apodo: ");
-        String apodo = scanner.nextLine();
-        System.out.print("Ingrese su número de DNI: ");
-        String dni = scanner.nextLine();
-        System.out.print("Ingrese su correo: ");
-        String correo = scanner.nextLine();
-        System.out.print("Ingrese su contraseña: ");
-        String contraseña = scanner.nextLine();
-
-        System.out.println("----Iniciar sesión----");
-        System.out.print("Ingrese su correo: ");
-        String correoIn = scanner.nextLine();
-        System.out.print("Ingrese su contraseña: ");
-        String contraseñaIn = scanner.nextLine();
-
-        if (correoIn.equals(correo) && contraseñaIn.equals(contraseña)) {
-            System.out.println("Bienvenido: " + apodo);
-            System.out.print("¿Cuál es su género (Mujer/Varón)? ");
-            String genero = scanner.nextLine();
-
-            switch (genero.toLowerCase()) {
-                case "mujer":
-                    System.out.println("¡Bienvenida! ¿Qué está buscando?");
-                    break;
-                case "varón":
-                    System.out.println("¡Bienvenido! ¿Qué está buscando?");
-                    break;
-                default:
-                    System.out.println("Ese género no existe");
-            }
-
-            promartfin1 tienda = new promartfin1();
-            tienda.Categorias();
-
+        public Usuario(String nombre, String apellido, String dni, LocalDate fechaNacimiento, String usuario, String contrasena) {
+            this.nombre = nombre;
+            this.apellido = apellido;
+            this.dni = dni;
+            this.fechaNacimiento = fechaNacimiento;
+            this.usuario = usuario;
+            this.contrasena = contrasena;
         }
     }
 
     public static void main(String[] args) {
-        SISPROMART tienda = new SISPROMART();
-        tienda.fEDAD();
+        Scanner scanner = new Scanner(System.in);
+
+        Usuario[] usuariosRegistrados = new Usuario[10]; // Array para almacenar hasta 10 usuarios
+        int totalUsuarios = 0;
+
+        // Mensaje de bienvenida
+        System.out.println("Bienvenido a Promart Home Center");
+
+        // Proceso de registro
+        while (totalUsuarios < usuariosRegistrados.length) {
+            System.out.println("\nPor favor, completa tu registro:");
+
+            System.out.print("Nombre: ");
+            String nombreUsuario = scanner.nextLine();
+
+            System.out.print("Apellidos: ");
+            String apellidoUsuario = scanner.nextLine();
+
+            System.out.print("Número de DNI: ");
+            String dniUsuario = scanner.nextLine();
+
+            System.out.print("Fecha de Nacimiento (DD/MM/AAAA): ");
+            String fechaNacimientoStr = scanner.nextLine();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
+
+            // Verificar edad para restricción de registro
+            LocalDate fechaActual = LocalDate.now();
+            int edad = fechaActual.getYear() - fechaNacimiento.getYear();
+
+            if (fechaActual.getMonthValue() < fechaNacimiento.getMonthValue() ||
+                    (fechaActual.getMonthValue() == fechaNacimiento.getMonthValue() &&
+                            fechaActual.getDayOfMonth() < fechaNacimiento.getDayOfMonth())) {
+                edad--;
+            }
+
+            if (edad < 18) {
+                System.out.println("Lo siento, no puedes registrarte. Debes ser mayor de 18 años.");
+                continue; // Volver a solicitar el registro si no cumple con la edad mínima
+            }
+
+            System.out.print("Nombre de usuario: ");
+            String usuarioRegistrado = scanner.nextLine();
+
+            System.out.print("Contraseña: ");
+            String contrasenaRegistrada = scanner.nextLine();
+
+            // Crear un nuevo usuario y agregarlo al array
+            usuariosRegistrados[totalUsuarios] = new Usuario(nombreUsuario, apellidoUsuario, dniUsuario, fechaNacimiento, usuarioRegistrado, contrasenaRegistrada);
+            totalUsuarios++;
+
+            // Mostrar mensaje de registro exitoso
+            System.out.println("\nRegistro exitoso. Ahora puedes iniciar sesión.");
+
+            // Preguntar al usuario si desea registrar otro usuario
+            System.out.print("¿Deseas registrar otro usuario? (s/n): ");
+            String opcion = scanner.nextLine();
+            if (!opcion.equalsIgnoreCase("s")) {
+                break; // Salir del bucle si la respuesta no es 's'
+            }
+        }
+
+        // Inicio de sesión
+        System.out.print("\nInicia sesión:\nUsuario: ");
+        String usuarioInput = scanner.nextLine();
+
+        System.out.print("Contraseña: ");
+        String contrasenaInput = scanner.nextLine();
+
+        // Verificar el inicio de sesión
+        boolean loginExitoso = false;
+        Usuario usuarioLogueado = null;
+        for (int i = 0; i < totalUsuarios; i++) {
+            if (usuarioInput.equals(usuariosRegistrados[i].usuario) && contrasenaInput.equals(usuariosRegistrados[i].contrasena)) {
+                loginExitoso = true;
+                usuarioLogueado = usuariosRegistrados[i];
+                break;
+            }
+        }
+
+        if (loginExitoso) {
+            // Mostrar mensaje de bienvenida al usuario logueado
+            System.out.println("\n¡Login exitoso! Bienvenido a Promart Home Center, " + usuarioLogueado.nombre + " " + usuarioLogueado.apellido + ".");
+            System.out.println("Número de DNI: " + usuarioLogueado.dni);
+            System.out.println("Fecha de Nacimiento: " + usuarioLogueado.fechaNacimiento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+        } else {
+            System.out.println("\nUsuario o contraseña incorrectos. Por favor, intenta de nuevo.");
+        }
+
+        scanner.close();
     }
 }
 
 class promartfin1 {
 
     Scanner grinch = new Scanner(System.in);
-    String[] tecnologia = {"Tv y video", "Cómputo", "Telefonía"};
-    String[][] marcasTecnologia = {
+    String[]categorias = {"Tecnologia", "ElectroHogar", "Muebles" , "Baño" , "Cocina" , "Dormitorio" , "Herramientas" , "Electricidad"};
+    String[]tecnologia = {"computo" , "tv y video" , "telefonia" , "casa inteligente" , "audio" , "video juegos"};
+    String[]ElectroHogar = {"refrigeracion" , "lavadoras" , "cuidado personal" , "electrodomesticos de cocina" , "termas" };
+    String[]Muebles = {"Muebles de dormitorio" , "muebles de oficina" , "muebles de sala"};
+    String[]Baño = {"combos de baño", "inodoro" , "muebles para baño"};
+    String[]cocina = {"muebles para cocina" , "organizadores de cocina" , "utesilios de cocina"};
+    String[]Dormitorio = {"Ropas de Cama" , "camas" , "colchones"};
+    String[]Herramientas = {"Herramientas electricas portatiles" , "herramientas estacionarias" , "herramientas inalambricas"};
+    String[]Electricidad = {"cables electricos" , "interruptores" , "seguridad"};
+    String[]Jardinería = {"Riego", "Maquinas para jardineria" , "Herramientas para jardin"};
+    String[]Iluminacion= {"Lamparas decorativas" , "Focos" , "Ilumincacion interior"};
+    String[]Infantil = {"Seguridad infantil" , "Baño infantil" , "juegos infantiles"};
+    String[]Automotriz = {"Accesorios para autos" , "Llantas" , "Limpieza para auto"};
+    String[]Mascotas = {"Perros" , "Gatos" , "Conejos y hamsters"};
+    String[]Salud_y_Deportes = {"Cuidado de la salud" , "Maquinas de gimnasio" , "Salud infantil"};
+
+
+    String[][] subproductoscomputo = {
             {"Samsung", "LG", "Sony"},
             {"HP", "Dell", "Apple"},
-            {"Apple", "Samsung", "Huawei"}
+            {"Apple", "Samsung", "Huawei"},
     };
-    String[][][] subMarcasTecnologia = {
+    String[][][] subMarcascomputo = {
             {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
             {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
             {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
     };
-    double[][][] preciosTecnologia = {
+    double[][][] precioscomputo = {
             {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
             {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
             {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
     };
-    String[] servicios = {"Pisos", "Electricidad", "Puertas", "Pintura"};
+    String[][] subproductostvyvideo = {
+            {"Samsung" , "LG" , "Blackline"},
+            {"Cables HDMI, VGA y de audio"},
+            {"Convertidores Smart TV",}
+
+    };
+    String[][][] subMarcastvyvideo = {
+            {{"Smart Tv Samsung Crystal UHD 65´ ", "Smart TV Samsung Crystal 50´", "Smart Tv Samsung UHD 45´"}, {"LG Smart Tv LED 55¨", "LG Smart Tv QNED 65¨", "LG smart Tv ThinQ 75"}, {"Tv BLACKLINE LED 75¨", "Tv BLACKLINE LED 65 UHD", "Tv BLACKLINE LED 55"}},
+            {{"PROLINK 1", "", "PROLINK 2"}, {"XTECH PRO", "XTECH UHD", "XTECH PLUS"}, {"Vention ABJ N", "Vention ABJ JN", "Vention ABJ BJ"}},
+            {{"Dispositivo de Tv Fire", "Dispositivo de Tv Fire Tv Stick Lite Amazon", "Dispositivo de Streaming Onn Google TV 4K Streaming Box"}},
+
+    };
+
+    double[][][] preciostvyvideo = {
+            {{1899, 1299, 1215}, {1499, 1899, 2249}, {2399, 1399, 950}},
+            {{31, 39, 41}, {59, 65, 69}, {15, 25, 35}},
+            {{250, 155, 199}},
+
+
+    };
+    String[][] subproductostelefonia = {
+            {"Samsung" , "Xiaomi" , "Honor"},
+            {"Samsung" , "Xiaomi" , "Apple"},
+            {"Samsung" , "apple" , "Phillips"},
+
+
+
+    };
+    String[][][] subMarcasTelefonia = {
+            {{"Samsung a22", "Samsung s21", "Samsung s22"}, {"Redmi note 10", "Redmi note 11", "Xiaomi 11t"}, {"Honor X8b", "Honor X6b", "Honor magic 6 lite"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosTelefonia = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][][] subproductosCasaInteligente = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasCasaInteligente = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosCasaInteligente = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][][] subproductosAudio = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+
+    String[][][] subMarcasAudio= {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosAudio = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+    String[][] subproductosVideoJuegos = {
+            {"Samsung", "LG", "Sony"},
+            {"HP", "Dell", "Apple"},
+            {"Apple", "Samsung", "Huawei"},
+    };
+    String[][][] subMarcasVideoJuegos = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosVideoJuegos = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][] subproductosrefrigeracion = {
+            {"Samsung" , "LG" , "Blackline"},
+            {"Cable hdmi 2.0" , "cable hdmi 1.5" , "cable hdmi 8k"},
+            {"dispositivo de tv 4k fire" , "dispositivo de tv fire lite amazon"},
+
+    };
+    String[][][] subMarcasrefrigeracion = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosrefrigeracion = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][][] subproductoslavadoras = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcaslavadoras = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] precioslavadoras = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][][] subproductosCuidadoPersonal = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasCuidadoPersonal = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosCuidadoPersonal = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][][] subproductosElectrodomesticosCocina= {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+
+    String[][][] subMarcasElectrodomesticosCocina = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] precioselElectrodomesticosCocina = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+
+
+    String[][] subproductostermas = {
+            {"Samsung", "LG", "Sony"},
+            {"HP", "Dell", "Apple"},
+            {"Apple", "Samsung", "Huawei"},
+    };
+    String[][][] subMarcastermas = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciostermas = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][] subproductosMueblesDormitorio = {
+            {"Samsung" , "LG" , "Blackline"},
+            {"Cable hdmi 2.0" , "cable hdmi 1.5" , "cable hdmi 8k"},
+            {"dispositivo de tv 4k fire" , "dispositivo de tv fire lite amazon"},
+
+    };
+    String[][][] subMarcasMueblesDormitorio = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosMueblesDormitorio = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][][] subproductosMueblesOficina = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasMueblesOficina = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosMueblesOficina = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+    String[][][] subproductosMueblesSala = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasMueblesSala = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosMueblesSala = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+    String[][][] subproductosCombosBaño = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasCombosBaño = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosCombosBaño = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+
+
+
+
+    String[][][] subproductosinodoro = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasinodoro = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosinodoro = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+
+
+    String[][][] subproductosMueblesBaño= {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasMueblesBaño = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosMueblesBaño = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+    String[][][] subproductosMueblesCocina = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasMueblesCocina = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosMueblesCocina = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+
+    String[][][] subproductosUtesiliosCocina = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasUtesiliosCocina = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosUtesiliosCocina = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+    String[][][] subproductosRopasCama = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasRopasCama = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosRopasCama = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+
+
+
+    String[][][] subproductoscamas= {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcascamas= {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] precioscamas = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductoscolchones = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcascolchones = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] precioscolchones = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+    String[][][] subproductosHerramientasElectricasPortatiles = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasHerramientasElectricasPortatiles = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosHerramientasElectricasPortatiles = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+    String[][][] subproductosHerramientasEstacionarias = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasHerramientasEstacionarias = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosHerramientasEstacionarias = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+    String[][][] subproductosHerramientasInalambricas = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasHerramientasInalambricas = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosHerramientasInalambricas = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosCablesElectricos = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasCablesElectricos = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosCablesElectricos = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+    String[][][] subproductosinterruptores = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasinterruptores = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosinterruptores = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosseguridad = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasseguridad = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosseguridad = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosRiego = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasRiego = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosRiego = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosMaquinasJardineria= {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasMaquinasJardineriaGatos = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosMaquinasJardineria = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+    String[][][] subproductosHerramientasJardin = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasHerramientasJardin = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosHerramientasJardin = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosLamparasDecorativas = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasLamparasDecorativas = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosLamparasDecorativas = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+    String[][][] subproductosFocos = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasFocos= {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosFocos= {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+    String[][][] subproductosIlumincacionInterior = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasIlumincacionInterior = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosIlumincacionInterior = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+    String[][][] subproductosSeguridadInfantil = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasSeguridadInfantil = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosSeguridadInfantil = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+    String[][][] subproductosBañoinfantil = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasBañoinfantil = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosBañoinfantil = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+    String[][][] subproductosjuegosInfantiles = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasMjuegosInfantiles = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosjuegosInfantiles = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+    String[][][] subproductosAccesoriosAutos = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasAccesoriosAutos = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosAccesoriosAutos = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosLlantas = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasLlantas = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosLlantas = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+    String[][][] subproductosLimpiezaAuto = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasLimpiezaAuto = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosLimpiezaAuto= {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosCuidadoSalud = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasCuidadoSalud = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosCuidadoSalud = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosMaquinasGimnasio = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasMaquinasGimnasio = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosMaquinasGimnasio = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+    String[][][] subproductosSaludInfantil = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    String[][][] subMarcasSaludInfantil = {
+            {{"Samsung Model A", "Samsung Model B", "Samsung Model C"}, {"LG Model X", "LG Model Y", "LG Model Z"}, {"Sony Model 1", "Sony Model 2", "Sony Model 3"}},
+            {{"HP Pavilion", "HP Envy", "HP Spectre"}, {"Dell Inspiron", "Dell XPS", "Dell Latitude"}, {"Apple MacBook Air", "Apple MacBook Pro", "Apple iMac"}},
+            {{"iPhone 12", "iPhone 13", "iPhone 14"}, {"Samsung Galaxy S21", "Samsung Galaxy S22", "Samsung Galaxy S23"}, {"Huawei P40", "Huawei P50", "Huawei P60"}}
+
+    };
+    double[][][] preciosSaludInfantil = {
+            {{1500, 1600, 1700}, {1200, 1300, 1400}, {1000, 1100, 1200}},
+            {{1200, 1300, 1400}, {1000, 1100, 1200}, {1400, 1500, 1600}},
+            {{800, 900, 1000}, {750, 850, 950}, {700, 800, 900}}
+
+
+    };
+
+
+
+
+
+
+
+
+    String[] ElectroHogar = {"Pisos", "Electricidad", "Puertas", "Pintura"};
+    string[][][]
     String[] productos = {"celulares", "cocinas", "sofa", "herramientas"};
     Random random = new Random();
     int s = random.nextInt(productos.length);
     double[] precio = {1000, 0.18, 500, 300, 250, 320};
     double[] subtotal_extra = {0, 0, 0, 0};
     double igv, subtotal, totalpagar;
-    int[] carrito = new int[tecnologia.length];
-    int[] carrito_extra = new int[servicios.length];
+    int[] carritogod = new int[subproductos.length];
+    int[] carrito = new int[categorias.length];
+    int[] carrito_extra = new int[ElectroHogar.length];
     int[] marcasSeleccionadas = new int[tecnologia.length];
     int[] subMarcasSeleccionadas = new int[tecnologia.length];
     String respuesta;
@@ -124,7 +1127,7 @@ class promartfin1 {
                 "\n" +
                 "");
         System.out.println("Marque alguna de las siguientes opciones");
-        System.out.println(" 1.- Tecnologia");
+        System.out.println(" 1.- Categorias");
         System.out.println(" 2.- Servicios");
         System.out.println(" 3.- Ofertas especiales");
         opcion = grinch.nextInt();
@@ -159,12 +1162,12 @@ class promartfin1 {
         if (opcion >= 1 && opcion <= tecnologia.length) {
             int productoSeleccionado = opcion - 1;
             System.out.println("Seleccione la marca del producto");
-            for (int i = 0; i < marcasTecnologia[productoSeleccionado].length; i++) {
-                System.out.println("Opcion " + (i + 1) + " : " + marcasTecnologia[productoSeleccionado][i]);
+            for (int i = 0; i < Categorias[productoSeleccionado].length; i++) {
+                System.out.println("Opcion " + (i + 1) + " : " + Categorias[productoSeleccionado][i]);
             }
             int marcaSeleccionada = grinch.nextInt();
             grinch.nextLine();
-            if (marcaSeleccionada >= 1 && marcaSeleccionada <= marcasTecnologia[productoSeleccionado].length) {
+            if (marcaSeleccionada >= 1 && marcaSeleccionada <= Categorias[productoSeleccionado].length) {
                 int marcaIndex = marcaSeleccionada - 1;
                 System.out.println("Seleccione el modelo de la marca");
                 for (int i = 0; i < subMarcasTecnologia[productoSeleccionado][marcaIndex].length; i++) {
@@ -251,7 +1254,7 @@ class promartfin1 {
         System.out.println("------Resumen de compra TECNOLOGIA------");
         for (int i = 0; i < tecnologia.length; i++) {
             if (carrito[i] > 0) {
-                System.out.println(tecnologia[i] + " - " + marcasTecnologia[i][marcasSeleccionadas[i]] + " - " +
+                System.out.println(tecnologia[i] + " - " + Categorias[i][marcasSeleccionadas[i]] + " - " +
                         subMarcasTecnologia[i][marcasSeleccionadas[i]][subMarcasSeleccionadas[i]] +
                         " - Cantidad: " + carrito[i] + " - Subtotal: S/ " +
                         (preciosTecnologia[i][marcasSeleccionadas[i]][subMarcasSeleccionadas[i]] * carrito[i]));
@@ -354,13 +1357,13 @@ class promartfin1 {
             FileWriter escritor = null;
             try {
                 escritor = new FileWriter(archivo);
-                System.out.println("__________________________________");
+                System.out.println("____________");
                 escritor.write("-------BOLETA DE VENTA-------\n");
-                System.out.println("__________________________________");
+                System.out.println("____________");
                 escritor.write("--SUBTOTAL--:\n" + subtotal);
                 escritor.write("--IGV--:\n "     + igv);
                 escritor.write("--TOTAL--:\n"   + totalpagar);
-                System.out.println("___________________________________");
+                System.out.println("_____________");
                 escritor.close();
             } catch (IOException e) {
                 System.out.println("ERROR AL EXPORTAR LA BOLETA");
@@ -373,7 +1376,5 @@ class promartfin1 {
         }
 
     }
-
-
-
 }
+
