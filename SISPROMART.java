@@ -119,10 +119,6 @@ public class SISPROMART {
 }
 
 
-
-
-
-
 class promartfin1 {
 
     Scanner grinch = new Scanner(System.in);
@@ -142,9 +138,9 @@ class promartfin1 {
     String[]Mascotas = {"Perros" , "Gatos" , "Conejos y hamsters"};
     String[]Salud_y_Deportes = {"Cuidado de la salud" , "Maquinas de gimnasio" , "Salud infantil"};
 
-  
+
     String[][] subproductoscomputo = {
-            {"Samsung", "LG", "Sony"},
+            {"Samsung", "Apple", "Honor"},
             {"HP", "Dell", "Apple"},
             {"Apple", "Samsung", "Huawei"},
     };
@@ -1105,48 +1101,26 @@ class promartfin1 {
     int[] marcastecnologia = new int[subproductoscomputo.length];
     int[] carrito1 = new int[tecnologia.length];
     int[] carrito2 = new int[ElectroHogar.length];
+    int[] carrito3 = new int[Muebles.length];
+    int[] carrito4 = new int[Baño.length];
+    int[] carrito5 = new int[cocina.length];
+    int[] carrito6 = new int[Dormitorio.length];
+    int[] carrito7 = new int[Herramientas.length];
+    int[] carrito8 = new int[Electricidad.length];
+    int[] carrito9 = new int[Jardinería.length];
+    int[] carrito10 = new int[Iluminacion.length];
+    int[] carrito11= new int[Infantil.length];
+    int[] carrito12= new int[Automotriz.length];
+    int[] carrito13 = new int[Mascotas.length];
+    int[] carrito14= new int[Salud_y_Deportes.length];
     int[]marcasSeleccionadas = new int[categorias.length];
     int[] subMarcasSeleccionadas = new int[tecnologia.length];
     String[] servicios;
     String respuesta;
     int opcion, cantidad;
 
-    public String Categorias() {
-        System.out.println("---------▁ ▂ ▄ ▅ ▆ ▇ █ BIENVENIDO A PROMART HOMECENTER █ ▇ ▆ ▅ ▄ ▂ ▁-----------");
-        System.out.println(" = \"\"\"\n" +
-                " ██████ █████  ██████ ███  ███ ██████ █████  ▄▄▄▄▄▄\n" +
-                " ██  ██ ██  ██ ██  ██ ████████ ██  ██ ██  ██   ██  \n" +
-                " ██████ █████  ██  ██ ██ ██ ██ ██████ █████    ██  \n" +
-                " ██     ██  ██ ██  ██ ██    ██ ██  ██ ██  ██   ██  \n" +
-                " ██     ██  ██ ██████ ██    ██ ██  ██ ██  ██   ██  \n" +
-                "\n" +
-                " P      R      O      M      A      R      T\n" +
-                "\"\"\"\n" +
-                "\n" +
-                "");
-        System.out.println("Marque alguna de las siguientes opciones");
-        System.out.println(" 1.- Categorias");
-        System.out.println(" 2.- Servicios");
-        System.out.println(" 3.- Ofertas especiales");
-        opcion = grinch.nextInt();
-        grinch.nextLine();
-        switch (opcion) {
-            case 1:
-                this.ComprarProducto();
-                break;
-            case 2:
-                this.ComprarExtra();
-                break;
-            case 3:
-                // Código para ofertas especiales
-                break;
-            default:
-                System.out.println("Opcion no válida");
-                this.Categorias();
-                break;
-        }
-        return null;
-    }
+
+
 
     public String ComprarProducto() {
         System.out.println("------TECNOLOGIA------------");
@@ -1195,6 +1169,7 @@ class promartfin1 {
         }
         return null;
     }
+
 
     public String ComprarMas() {
         System.out.println("¿Desea comprar más productos de tecnología? (S/N)");
@@ -1318,12 +1293,8 @@ class promartfin1 {
                 System.out.println("║ IGV :     "                       + igv);
                 System.out.println("║ TOTAL :   "                       + totalpagar);
                 System.out.println("║                                            ║");
-                System.out.println("╚════════════════════════════════════════════╝");
-                System.out.println("");
-                System.out.println("¡PAGO REALIZADO CON EXITO!");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
+                System.out.println("╚════════════════════════════════════════════╝\n");
+                System.out.println("¡PAGO REALIZADO CON EXITO!\n\n\n");
                 break;
             default:
                 System.out.println("Opción no válida. Seleccione nuevamente.");
@@ -1336,8 +1307,7 @@ class promartfin1 {
         System.out.println("██║░░╚██╗██╔══██╗██╔══██║██║░░██╗██║██╔══██║░╚═══██╗  ██╔═══╝░██║░░██║██╔══██╗");
         System.out.println("╚██████╔╝██║░░██║██║░░██║╚█████╔╝██║██║░░██║██████╔╝  ██║░░░░░╚█████╔╝██║░░██║");
         System.out.println("╚╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝╚═╝░░╚═╝╚═════╝░  ╚═╝░░░░░░╚════╝░╚═╝░░╚═╝");
-        System.out.println("");
-        System.out.println("");
+        System.out.println("\n\n");
         System.out.println("██╗░░░██╗██╗░██████╗██╗████████╗░█████╗░██████╗░  ██████╗░██████╗░░█████╗░███╗░░░███╗░█████╗░██████╗░████████");
         System.out.println("██║░░░██║██║██╔════╝██║╚══██╔══╝██╔══██╗██╔══██╗  ██╔══██╗██╔══██╗██╔══██╗████╗░████║██╔══██╗██╔══██╗╚══██╔══╝");
         System.out.println("╚██╗░██╔╝██║╚█████╗░██║░░░██║░░░███████║██████╔╝  ██████╔╝██████╔╝██║░░██║██╔████╔██║███████║██████╔╝░░░██║░░");
