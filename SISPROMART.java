@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 
 public class SISPROMART {
@@ -32,10 +33,9 @@ public class SISPROMART {
         Usuario[] usuariosRegistrados = new Usuario[10]; // Array para almacenar hasta 10 usuarios
         int totalUsuarios = 0;
 
-        // Mensaje de bienvenida
+
         System.out.println("Bienvenido a Promart Home Center");
 
-        // Proceso de registro
         while (totalUsuarios < usuariosRegistrados.length) {
             System.out.println("\nPor favor, completa tu registro:");
 
@@ -54,7 +54,7 @@ public class SISPROMART {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
 
-            // Verificar edad para restricción de registro
+
             LocalDate fechaActual = LocalDate.now();
             int edad = fechaActual.getYear() - fechaNacimiento.getYear();
 
@@ -66,7 +66,7 @@ public class SISPROMART {
 
             if (edad < 18) {
                 System.out.println("Lo siento, no puedes registrarte. Debes ser mayor de 18 años.");
-                continue; // Volver a solicitar el registro si no cumple con la edad mínima
+                continue;
             }
 
             System.out.print("Nombre de usuario: ");
@@ -75,29 +75,26 @@ public class SISPROMART {
             System.out.print("Contraseña: ");
             String contrasenaRegistrada = scanner.nextLine();
 
-            // Crear un nuevo usuario y agregarlo al array
             usuariosRegistrados[totalUsuarios] = new Usuario(nombreUsuario, apellidoUsuario, dniUsuario, fechaNacimiento, usuarioRegistrado, contrasenaRegistrada);
             totalUsuarios++;
 
-            // Mostrar mensaje de registro exitoso
+
             System.out.println("\nRegistro exitoso. Ahora puedes iniciar sesión.");
 
-            // Preguntar al usuario si desea registrar otro usuario
+
             System.out.print("¿Deseas registrar otro usuario? (s/n): ");
             String opcion = scanner.nextLine();
             if (!opcion.equalsIgnoreCase("s")) {
-                break; // Salir del bucle si la respuesta no es 's'
+                break;
             }
         }
 
-        // Inicio de sesión
         System.out.print("\nInicia sesión:\nUsuario: ");
         String usuarioInput = scanner.nextLine();
 
         System.out.print("Contraseña: ");
         String contrasenaInput = scanner.nextLine();
 
-        // Verificar el inicio de sesión
         boolean loginExitoso = false;
         Usuario usuarioLogueado = null;
         for (int i = 0; i < totalUsuarios; i++) {
@@ -109,7 +106,6 @@ public class SISPROMART {
         }
 
         if (loginExitoso) {
-            // Mostrar mensaje de bienvenida al usuario logueado
             System.out.println("\n¡Login exitoso! Bienvenido a Promart Home Center, " + usuarioLogueado.nombre + " " + usuarioLogueado.apellido + ".");
             System.out.println("Número de DNI: " + usuarioLogueado.dni);
             System.out.println("Fecha de Nacimiento: " + usuarioLogueado.fechaNacimiento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -121,6 +117,11 @@ public class SISPROMART {
         scanner.close();
     }
 }
+
+
+
+
+
 
 class promartfin1 {
 
@@ -141,7 +142,7 @@ class promartfin1 {
     String[]Mascotas = {"Perros" , "Gatos" , "Conejos y hamsters"};
     String[]Salud_y_Deportes = {"Cuidado de la salud" , "Maquinas de gimnasio" , "Salud infantil"};
 
-
+  
     String[][] subproductoscomputo = {
             {"Samsung", "LG", "Sony"},
             {"HP", "Dell", "Apple"},
@@ -1095,21 +1096,18 @@ class promartfin1 {
 
 
 
-
-
-    String[] ElectroHogar = {"Pisos", "Electricidad", "Puertas", "Pintura"};
-    string[][][]
     String[] productos = {"celulares", "cocinas", "sofa", "herramientas"};
     Random random = new Random();
     int s = random.nextInt(productos.length);
     double[] precio = {1000, 0.18, 500, 300, 250, 320};
     double[] subtotal_extra = {0, 0, 0, 0};
     double igv, subtotal, totalpagar;
-    int[] carritogod = new int[subproductos.length];
-    int[] carrito = new int[categorias.length];
-    int[] carrito_extra = new int[ElectroHogar.length];
-    int[] marcasSeleccionadas = new int[tecnologia.length];
+    int[] marcastecnologia = new int[subproductoscomputo.length];
+    int[] carrito1 = new int[tecnologia.length];
+    int[] carrito2 = new int[ElectroHogar.length];
+    int[]marcasSeleccionadas = new int[categorias.length];
     int[] subMarcasSeleccionadas = new int[tecnologia.length];
+    String[] servicios;
     String respuesta;
     int opcion, cantidad;
 
@@ -1162,24 +1160,24 @@ class promartfin1 {
         if (opcion >= 1 && opcion <= tecnologia.length) {
             int productoSeleccionado = opcion - 1;
             System.out.println("Seleccione la marca del producto");
-            for (int i = 0; i < Categorias[productoSeleccionado].length; i++) {
-                System.out.println("Opcion " + (i + 1) + " : " + Categorias[productoSeleccionado][i]);
+            for (int i = 0; i < subproductoscomputo[productoSeleccionado].length; i++) {
+                System.out.println("Opcion " + (i + 1) + " : " + subproductoscomputo[productoSeleccionado][i]);
             }
             int marcaSeleccionada = grinch.nextInt();
             grinch.nextLine();
-            if (marcaSeleccionada >= 1 && marcaSeleccionada <= Categorias[productoSeleccionado].length) {
+            if (marcaSeleccionada >= 1 && marcaSeleccionada <= subMarcascomputo[productoSeleccionado].length) {
                 int marcaIndex = marcaSeleccionada - 1;
                 System.out.println("Seleccione el modelo de la marca");
-                for (int i = 0; i < subMarcasTecnologia[productoSeleccionado][marcaIndex].length; i++) {
-                    System.out.println("Opcion " + (i + 1) + " : " + subMarcasTecnologia[productoSeleccionado][marcaIndex][i] + " - Precio: S/ " + preciosTecnologia[productoSeleccionado][marcaIndex][i]);
+                for (int i = 0; i < subMarcascomputo[productoSeleccionado][marcaIndex].length; i++) {
+                    System.out.println("Opcion " + (i + 1) + " : " + subMarcascomputo[productoSeleccionado][marcaIndex][i] + " - Precio: S/ " + precioscomputo[productoSeleccionado][marcaIndex][i]);
                 }
                 int subMarcaSeleccionada = grinch.nextInt();
                 grinch.nextLine();
-                if (subMarcaSeleccionada >= 1 && subMarcaSeleccionada <= subMarcasTecnologia[productoSeleccionado][marcaIndex].length) {
+                if (subMarcaSeleccionada >= 1 && subMarcaSeleccionada <= subMarcascomputo[productoSeleccionado][marcaIndex].length) {
                     System.out.println("¿Cuantos comprará? Ingrese la cantidad");
                     cantidad = grinch.nextInt();
                     grinch.nextLine();
-                    carrito[productoSeleccionado] += cantidad;
+                    carrito1[productoSeleccionado] += cantidad;
                     marcasSeleccionadas[productoSeleccionado] = marcaIndex;
                     subMarcasSeleccionadas[productoSeleccionado] = subMarcaSeleccionada - 1;
                     this.ComprarMas();
@@ -1224,11 +1222,11 @@ class promartfin1 {
             System.out.println("¿Cuantos comprará? Ingrese la cantidad");
             cantidad = grinch.nextInt();
             grinch.nextLine();
-            carrito_extra[servicioSeleccionado] += cantidad;
-            this.ComprarMasExtra();
+            carrito2[servicioSeleccionado] += cantidad;
         } else {
             System.out.println("Opcion no válida");
             this.ComprarExtra();
+            this.ComprarMasExtra();
         }
         return null;
     }
@@ -1253,12 +1251,12 @@ class promartfin1 {
         totalpagar = 0;
         System.out.println("------Resumen de compra TECNOLOGIA------");
         for (int i = 0; i < tecnologia.length; i++) {
-            if (carrito[i] > 0) {
-                System.out.println(tecnologia[i] + " - " + Categorias[i][marcasSeleccionadas[i]] + " - " +
-                        subMarcasTecnologia[i][marcasSeleccionadas[i]][subMarcasSeleccionadas[i]] +
-                        " - Cantidad: " + carrito[i] + " - Subtotal: S/ " +
-                        (preciosTecnologia[i][marcasSeleccionadas[i]][subMarcasSeleccionadas[i]] * carrito[i]));
-                subtotal += preciosTecnologia[i][marcasSeleccionadas[i]][subMarcasSeleccionadas[i]] * carrito[i];
+            if (carrito1[i] > 0) {
+                System.out.println(tecnologia[i] + " - " + subproductoscomputo[i][marcasSeleccionadas[i]] + " - " +
+                        subMarcascomputo[i][marcasSeleccionadas[i]][subMarcasSeleccionadas[i]] +
+                        " - Cantidad: " + carrito1[i] + " - Subtotal: S/ " +
+                        (precioscomputo[i][marcasSeleccionadas[i]][subMarcasSeleccionadas[i]] * carrito1[i]));
+                subtotal += precioscomputo[i][marcasSeleccionadas[i]][subMarcasSeleccionadas[i]] * carrito1[i];
             }
         }
         igv = subtotal * 0.18;
@@ -1277,10 +1275,10 @@ class promartfin1 {
         subtotal_extra[3] = 0;
         System.out.println("------Resumen de compra SERVICIOS--------");
         for (int i = 0; i < servicios.length; i++) {
-            if (carrito_extra[i] > 0) {
-                System.out.println(servicios[i] + " - Cantidad: " + carrito_extra[i] + " - Subtotal: S/ " +
-                        (precio[i] * carrito_extra[i]));
-                subtotal_extra[i] += precio[i] * carrito_extra[i];
+            if (carrito2[i] > 0) {
+                System.out.println(servicios[i] + " - Cantidad: " + carrito2[i] + " - Subtotal: S/ " +
+                        (precio[i] * carrito2[i]));
+                subtotal_extra[i] += precio[i] * carrito2[i];
             }
         }
         subtotal = subtotal + subtotal_extra[0] + subtotal_extra[1] + subtotal_extra[2] + subtotal_extra[3];
